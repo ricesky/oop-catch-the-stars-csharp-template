@@ -419,6 +419,9 @@ Pada langkah ini, kita akan menambahkan logika untuk memperbarui skor ketika `Ba
 
    ```csharp
    private int _score;
+
+   public int Score { get { return _score; } }
+
    ```
 
 3. Di dalam konstruktor `Sky`, inisialisasi `_score` dengan nilai 0.
@@ -435,7 +438,7 @@ Pada langkah ini, kita akan menambahkan logika untuk memperbarui skor ketika `Ba
 1. Tambahkan metode `GenerateStar` di kelas `Sky`. Metode ini bertugas membuat atau memposisikan ulang objek `Star` di bagian atas layar.
 
    ```csharp
-   private void GenerateStar()
+   public void GenerateStar()
    {
        if (_star != null)
        {
@@ -448,7 +451,18 @@ Pada langkah ini, kita akan menambahkan logika untuk memperbarui skor ketika `Ba
 
    - Metode `GenerateStar` akan menghapus objek `Star` yang lama (jika ada) dan membuat objek `Star` baru di posisi atas layar.
 
-#### c. Mengupdate Skor dan Mengganti Bintang Ketika Tabrakan
+#### c. Membuat Metode UpdateScore
+1. Tambahkan metode `UpdateScore` di kelas `Sky`. Metode ini bertugas melakukan increment variabel `_score` dan mengupdate tampilan di `_scoreLabel`.
+
+   ```csharp
+   public void UpdateScore()
+   {
+        _score++;
+        _scoreLabel.Text = "Score: " + _score;
+   }
+   ```
+
+#### d. Mengupdate Skor dan Mengganti Bintang Ketika Tabrakan
 1. Di dalam metode `GameLoop`, tambahkan logika untuk memperbarui skor dan memanggil `GenerateStar` saat terjadi tabrakan antara `Basket` dan `Star`.
 
    ```csharp
@@ -462,8 +476,7 @@ Pada langkah ini, kita akan menambahkan logika untuk memperbarui skor ketika `Ba
        // Deteksi tabrakan antara Basket dan Star
        if (_basket.IsCollidedWith(_star))
        {
-           _score++;
-           _scoreLabel.Text = "Score: " + _score;
+           UpdateScore();
            GenerateStar();
        }
    }
@@ -503,8 +516,7 @@ Pada langkah ini, kita akan menambahkan logika untuk mengganti objek `Star` keti
        // Deteksi tabrakan antara Basket dan Star
        if (_basket.IsCollidedWith(_star))
        {
-           _score++;
-           _scoreLabel.Text = "Score: " + _score;
+           UpdateScore();
            GenerateStar();
        }
        // Ganti Star jika sudah melewati layar
@@ -538,8 +550,7 @@ Tambahkan suara yang dimainkan setiap kali `Basket` menangkap `Star`.
    if (_basket.IsCollidedWith(_star))
    {
        _collisionSound.Play();
-       _score++;
-       _scoreLabel.Text = "Score: " + _score;
+       UpdateScore();
        GenerateStar();
    }
    ```
